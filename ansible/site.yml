@@ -1,0 +1,6 @@
+---
+- name: Configure Genosha MicroK8s Cluster
+  hosts: all
+  become: yes
+  roles:
+    - genosha_cluster

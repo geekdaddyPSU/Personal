@@ -1,0 +1,19 @@
+---
+- name: Create directory for SSL certs
+  file:
+    path: /var/snap/microk8s/current/certs
+    state: directory
+    mode: "0755"
+
+- name: Generate SSL cert for MicroK8s
+  openssl_certificate:
+    path: /var/snap/microk8s/current/certs/microk8s.crt
+    privatekey_path: /var/snap/microk8s/current/certs/microk8s.key
+    common_name: "{{ inventory_hostname }}"
+    provider: selfsigned
+    attributes:
+      organizationName: "{{ cluster_name }}"
+    not_after: "+365d"
+
+- name: Restart MicroK8s after cert update
+  command: microk8s stop && microk8s start
