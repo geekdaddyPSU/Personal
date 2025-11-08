@@ -1,0 +1,9 @@
+---
+- name: Install required packages
+  apt:
+    name:
+      - nfs-common
+      - net-tools
+      - docker.io
+    state: present
+    update_cache: yes

@@ -1,0 +1,29 @@
+---
+# main.yml - orchestrates the full cluster setup
+
+- name: System updates and reboot check
+  import_tasks: system_update.yml
+
+- name: Disable IPv6
+  import_tasks: disable_ipv6.yml
+
+- name: Install utilities (nfs-common, net-tools, docker.io)
+  import_tasks: install_utilities.yml
+
+- name: Install and configure MicroK8s
+  import_tasks: install_microk8s.yml
+
+- name: Generate SSL certificate (master only)
+  import_tasks: generate_ssl_cert.yml
+  when: inventory_hostname == 'storm'
+
+- name: Join cluster (workers only)
+  import_tasks: join_cluster.yml
+  when: inventory_hostname != 'storm'
+
+- name: Configure persistent NFS mount
+  import_tasks: configure_nfs.yml
+
+- name: Retrieve MicroK8s config (master only)
+  import_tasks: get_microk8s_config.yml
+  when: inventory_hostname == 'storm'

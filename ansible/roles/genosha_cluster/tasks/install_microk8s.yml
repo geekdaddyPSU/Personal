@@ -1,0 +1,16 @@
+---
+- name: Install MicroK8s
+  snap:
+    name: microk8s
+    classic: yes
+    state: present
+
+- name: Disable IPv6 for MicroK8s API server
+  lineinfile:
+    path: /var/snap/microk8s/current/args/kube-apiserver
+    regexp: "^--bind-address="
+    line: "--bind-address=0.0.0.0"
+    create: yes
+
+- name: Ensure MicroK8s is started
+  command: microk8s status --wait-ready

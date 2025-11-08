@@ -1,0 +1,7 @@
+---
+- name: Reboot if first upgrade after provisioning
+  reboot:
+    msg: "Rebooting {{ inventory_hostname }} after first kernel upgrade."
+    connect_timeout: 5
+    reboot_timeout: 600
+  when: reboot_required.stat.exists

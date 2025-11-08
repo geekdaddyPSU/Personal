@@ -1,0 +1,14 @@
+---
+- name: Retrieve MicroK8s config
+  command: microk8s config
+  register: kubeconfig
+
+- name: Display MicroK8s config
+  debug:
+    var: kubeconfig.stdout
+
+- name: Save MicroK8s config to control machine
+  local_action:
+    copy:
+      content: "{{ kubeconfig.stdout }}"
+      dest: "./genosha_kubeconfig.yaml"

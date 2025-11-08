@@ -1,0 +1,19 @@
+---
+- name: Ensure NFS mount directory exists
+  file:
+    path: "{{ nfs_mount }}"
+    state: directory
+    mode: "0755"
+
+- name: Add NFS mount to fstab
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ nfs_server }}:{{ nfs_path }} {{ nfs_mount }} nfs defaults 0 0"
+    state: present
+
+- name: Mount NFS volume
+  mount:
+    path: "{{ nfs_mount }}"
+    src: "{{ nfs_server }}:{{ nfs_path }}"
+    fstype: nfs
+    state: mounted
