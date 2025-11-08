@@ -7,6 +7,9 @@
 - name: Disable IPv6
   import_tasks: disable_ipv6.yml
 
+- name: Configure cgroup memory (required for MicroK8s)
+  import_tasks: cgroup.yml
+
 - name: Install utilities (nfs-common, net-tools, docker.io)
   import_tasks: install_utilities.yml
 
